@@ -28,7 +28,7 @@ pip freeze > requirements.txt
 ```
 #### Executando a API
 ```bash
-uvicorn main:app --reload
+uvicorn app.main:app --reload
 ```
 
 Após iniciar, a API ficará disponível em:
