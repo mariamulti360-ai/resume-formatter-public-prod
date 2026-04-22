@@ -1,13 +1,18 @@
+import os
 from fastapi import FastAPI
+from dotenv import load_dotenv
 
-app = FastAPI()
+# Carrega as variáveis do arquivo .env
+load_dotenv()
 
-@app.get("/status")
-def get_status():
-    # Verificação simples por condição
-    servidor_pronto = True
+app = FastAPI(title=os.getenv("APP_NAME"))
+
+@app.get("/config")
+def get_config():
+    # Verificação simples de condição
+    debug_mode = os.getenv("DEBUG")
     
-    if servidor_pronto:
-        return {"status": "operacional", "sistema": "FastAPI"}
+    if debug_mode == "True":
+        return {"modo": "desenvolvimento", "porta": os.getenv("PORT")}
     else:
-        return {"status": "erro", "detalhe": "falha na inicialização"}
+        return {"modo": "produção"}

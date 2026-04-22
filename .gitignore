@@ -1,0 +1,11 @@
+# Ambientes Virtuais
+venv/
+.venv/
+
+# Dependências Front
+node_modules/
+dist/
+
+# Variáveis Sensíveis
+.env
+.env.local
