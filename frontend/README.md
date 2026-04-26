@@ -1,46 +1,28 @@
+## Acessendo o Frontend do monorepositorio
 
-#### Criando o Ambiente Virtual
-```bash
-python -m venv venv
 ```
-	
-#### Ativando o Ambiente Virtual (VS Code)
-- No POWERSHELL
-```
-.\venv\Scripts\Activate.ps1
-```
-	
-- No CMD
-```
-venv\Scripts\activate
-```
-	
-#### Gerenciamento de dependências 
-	
-- Instalando dependências do projeto
-```bash
-pip install -r requirements.txt
-```
-	
-- Atualize o arquivo requirements.txt
-```bash
-pip freeze > requirements.txt
-```
-#### Executando a API
-```bash
-uvicorn app.main:app --reload
+cd frontend
 ```
 
-Após iniciar, a API ficará disponível em:
+---
 
-- [http://127.0.0.1:8000](http://127.0.0.1:8000/)
-- Documentação automática (Swagger): [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+## Instalando as dependencias { node_modules }
 
-#### Chat IA
-```bash
-uvicorn main:app --reload
+Garanta que o arquivo package.json existe (ele contem a lista de bibliotecas como MUI e REACT)
+
+- Rode no terminal
+```
+npm install
 ```
 
-Após iniciar, a API ficará disponível em:
+Esse comando deve criar a pasta node_modules
 
-- [http://127.0.0.1:8000]
+---
+
+## Iniciando o servidor 
+```
+npm run dev
+```
+
+---
+
