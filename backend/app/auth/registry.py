@@ -1,12 +1,8 @@
 from os import getenv
 from dotenv import load_dotenv, find_dotenv
 
-print("find_dotenv:", find_dotenv())
 
 load_dotenv()
-
-print("USER_1_USERNAME =", getenv("USER_1_USERNAME"))
-print("USER_1_PASSWORD =", getenv("USER_1_PASSWORD"))
 
 def load_users() -> dict:
     users = {}

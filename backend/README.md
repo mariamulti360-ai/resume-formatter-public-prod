@@ -45,11 +45,40 @@ Sem um .env configurado com os nomes de parametros corretos, o backend nao funci
 
 ```bash
 
-USER_1=admin
-PASSWORD_1=admin123
+USER_1_USERNAME=admin
+USER_1_PASSWORD=hash_da_senha
 
-USER_2=malu
-PASSWORD_2=senha456
+```
+
+Em seguida, gere um "secret_key" JWT para configurar o env 
+
+```bash
+
+USER_1_USERNAME=admin
+USER_1_PASSWORD=hash_da_senha
+
+```
+SECRET_KEY=minha-chave-super-secreta-123456789
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+
+```
+# Backend
+
+- main.py
+    - Inicializa a aplicação FastAPI, configura o CORS, registra as rotas, define a autenticação via JWT e centraliza as configurações da API.
+
+- registry.py
+    - Carrega os usuários do `.env`, armazena-os em memória e fornece esses dados para outras partes da aplicação.
+
+- router.py (/login)
+    - Recebe as credenciais do usuário, valida o login e, se estiverem corretas, retorna um token JWT.
+
+- security.py
+    - Centraliza as funções de segurança da autenticação, como a verificação da senha e a geração do token JWT.
+
+- generate_hash.py
+    - Gera o hash bcrypt de uma senha em texto puro para que ela possa ser armazenada com segurança no `.env`.
 ```
 
 ```

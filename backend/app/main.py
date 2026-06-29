@@ -16,7 +16,7 @@ load_dotenv()
 SECRET_KEY = getenv("SECRET_KEY")
 ALGORITHM = getenv("ALGORITHM")
 
-app = FastAPI(title=os.getenv("APP_NAME", "ATS_Optimizer"))
+app = FastAPI(title=os.getenv("APP_NAME", "FORMATADOR DE CURRICULO"))
 
 # --- CONFIGURAÇÃO DE CORS (Essencial para React/Vite) ---
 app.add_middleware(
