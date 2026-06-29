@@ -10,6 +10,8 @@ SECRET_KEY = getenv("SECRET_KEY")
 ALGORITHM = getenv("ALGORITHM")
 expire_value = getenv("ACCESS_TOKEN_EXPIRE_MINUTES")
 
+print(repr(SECRET_KEY), type(SECRET_KEY))
+
 if expire_value:
     ACCESS_TOKEN_EXPIRE_MINUTES = int(expire_value)
 else:

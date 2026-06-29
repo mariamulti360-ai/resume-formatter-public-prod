@@ -1,0 +1,10 @@
+from passlib.context import CryptContext
+
+pwd_context = CryptContext(
+    schemes=["bcrypt"],
+    deprecated="auto"
+)
+
+senha = "maluAdmin2101"
+
+print(pwd_context.hash(senha))
