@@ -39,6 +39,20 @@ pip freeze > requirements.txt
 uvicorn app.main:app --reload
 ```
 
+- Crie um .env baseando-se no exemplo.
+
+Sem um .env configurado com os nomes de parametros corretos, o backend nao funciona. 
+
+```bash
+
+USER_1=admin
+PASSWORD_1=admin123
+
+USER_2=malu
+PASSWORD_2=senha456
+```
+
+```
 Após iniciar, a API ficará disponível em:
 
 - [http://127.0.0.1:8000](http://127.0.0.1:8000/)
