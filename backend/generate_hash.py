@@ -5,6 +5,6 @@ pwd_context = CryptContext(
     deprecated="auto"
 )
 
-senha = "maluAdmin2101"
+senha = "xxxxx"
 
 print(pwd_context.hash(senha))
