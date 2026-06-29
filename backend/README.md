@@ -39,6 +39,7 @@ pip freeze > requirements.txt
 uvicorn app.main:app --reload
 ```
 
+## Config o .env do projeto
 - Crie um .env baseando-se no exemplo.
 
 Sem um .env configurado com os nomes de parametros corretos, o backend nao funciona. 
@@ -52,12 +53,8 @@ USER_1_PASSWORD=hash_da_senha
 
 Em seguida, gere um "secret_key" JWT para configurar o env 
 
+
 ```bash
-
-USER_1_USERNAME=admin
-USER_1_PASSWORD=hash_da_senha
-
-```
 SECRET_KEY=minha-chave-super-secreta-123456789
 ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=30
@@ -79,11 +76,12 @@ ACCESS_TOKEN_EXPIRE_MINUTES=30
 
 - generate_hash.py
     - Gera o hash bcrypt de uma senha em texto puro para que ela possa ser armazenada com segurança no `.env`.
-```
 
-```
+
+---
+
 Após iniciar, a API ficará disponível em:
-
+```bash
 - [http://127.0.0.1:8000](http://127.0.0.1:8000/)
 - Documentação automática (Swagger): [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
-
+```
