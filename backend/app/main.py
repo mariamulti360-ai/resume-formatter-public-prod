@@ -1,8 +1,12 @@
 import os
+from pathlib import Path
 from os import getenv
-from fastapi import FastAPI, HTTPException, Header, Depends
-from fastapi.middleware.cors import CORSMiddleware  # Importação necessária para o Frontend
+
 from dotenv import load_dotenv
+from fastapi import Depends, FastAPI, Header, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from jose import jwt
 
 # Seus imports de rotas existentes
@@ -18,10 +22,10 @@ ALGORITHM = getenv("ALGORITHM")
 
 app = FastAPI(title=os.getenv("APP_NAME", "FORMATADOR DE CURRICULO"))
 
-# --- CONFIGURAÇÃO DE CORS (Essencial para React/Vite) ---
+# --- CONFIGURAÇÃO DE CORS ---
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # Em produção, coloque o endereço do seu front (ex: http://localhost:5173)
+    allow_origins=["*"],  # Em produção, pode restringir se desejar
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -35,18 +39,20 @@ def get_current_user(authorization: str = Header(None)):
     parts = authorization.split(" ")
     if len(parts) != 2 or parts[0] != "Bearer":
         raise HTTPException(status_code=401, detail="Formato de token inválido")
-    
+
     token = parts[1]
-    
-    # Nota: Aqui o ideal seria um try/catch apenas para a lib jose, 
-    # mas mantendo sua regra de IF/ELSE para lógica de negócio:
+
     payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
     username = payload.get("sub")
 
     if username is None:
-        raise HTTPException(status_code=401, detail="Dados de usuário não encontrados no token")
+        raise HTTPException(
+            status_code=401,
+            detail="Dados de usuário não encontrados no token"
+        )
 
     return username
+
 
 # --- ROTAS ---
 
@@ -54,18 +60,47 @@ def get_current_user(authorization: str = Header(None)):
 def get_config():
     debug_mode = os.getenv("DEBUG")
     if debug_mode == "True":
-        return {"modo": "desenvolvimento", "porta": os.getenv("PORT")}
+        return {
+            "modo": "desenvolvimento",
+            "porta": os.getenv("PORT")
+        }
+
     return {"modo": "produção"}
 
-# Rota de teste protegida
+
 @app.get("/chat")
 def chat(user: str = Depends(get_current_user)):
     return {"message": f"Acesso permitido para {user}"}
 
+
 # Registro dos Routers
 app.include_router(auth_router, prefix="/auth")
-
-# Incluindo o router da Groq. 
-# Se quiser que TODAS as rotas da Groq exijam login, use:
-# app.include_router(groq_router, prefix="/api/v1", dependencies=[Depends(get_current_user)])
 app.include_router(groq_router, prefix="/api/v1")
+
+
+# ------------------------------------------------------------------
+# SERVE O FRONTEND (APENAS SE O BUILD EXISTIR)
+# ------------------------------------------------------------------
+
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+FRONTEND_DIST = BASE_DIR / "frontend" / "dist"
+
+if FRONTEND_DIST.exists():
+
+    assets_dir = FRONTEND_DIST / "assets"
+
+    if assets_dir.exists():
+        app.mount(
+            "/assets",
+            StaticFiles(directory=assets_dir),
+            name="assets",
+        )
+
+    @app.get("/{full_path:path}")
+    async def serve_react_app(full_path: str):
+        requested_file = FRONTEND_DIST / full_path
+
+        if requested_file.exists() and requested_file.is_file():
+            return FileResponse(requested_file)
+
+        return FileResponse(FRONTEND_DIST / "index.html")
