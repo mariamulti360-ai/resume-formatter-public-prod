@@ -1,11 +1,23 @@
-### device guard
-
-Se der merda e bloquear execucao do backend por causa do device guard
-
+ENV PROD
 '''
-python -m uvicorn app.main:app --reload
-'''
+SECRET_KEY=cb29af276f6a27b1ded75020b735f98241142589bd6a5b277e959a4d8698598b
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+
+USER_1_USERNAME=admin_malu
+USER_1_PASSWORD_TEXT=maluAdmin2101
+USER_1_PASSWORD=$2b$12$7igcmyNzfzcoTkV9Qz2sS.JSJY1wFh1MSbSos7HCnN8hkqxfG68je
+
+USER_2_USERNAME=admin_keila
+USER_2_PASSWORD=keilaAdmin2101
+
+USER_3_USERNAME=admin
+USER_3_PASSWORD=admin123
+
+USER_4_USERNAME=admin
+USER_4_PASSWORD=admin123
+
+USER_5_USERNAME=admin
+USER_5_PASSWORD=admin123'''
 
 ----
-
-### pra executar o projeto, tem que subir o server no front e no back e deixar ambos ^ligados^
