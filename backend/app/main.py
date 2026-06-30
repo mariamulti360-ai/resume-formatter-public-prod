@@ -78,29 +78,3 @@ app.include_router(auth_router, prefix="/auth")
 app.include_router(groq_router, prefix="/api/v1")
 
 
-# ------------------------------------------------------------------
-# SERVE O FRONTEND (APENAS SE O BUILD EXISTIR)
-# ------------------------------------------------------------------
-
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
-FRONTEND_DIST = BASE_DIR / "frontend" / "dist"
-
-if FRONTEND_DIST.exists():
-
-    assets_dir = FRONTEND_DIST / "assets"
-
-    if assets_dir.exists():
-        app.mount(
-            "/assets",
-            StaticFiles(directory=assets_dir),
-            name="assets",
-        )
-
-    @app.get("/{full_path:path}")
-    async def serve_react_app(full_path: str):
-        requested_file = FRONTEND_DIST / full_path
-
-        if requested_file.exists() and requested_file.is_file():
-            return FileResponse(requested_file)
-
-        return FileResponse(FRONTEND_DIST / "index.html")
